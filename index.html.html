@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+    CUSTOMIZATION POINT 1: Page title & SEO
+  ============================================================ -->
+  <title>Dhaka Spice House — AI Assistant</title>
+  <meta name="description" content="Chat with our AI assistant anytime. Get instant answers about our menu, hours, delivery, and more." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+      CUSTOMIZATION POINT 2: Brand Colors
+      Change these 4 variables to match any client's brand.
+    ============================================================ */
+    :root {
+      --brand-primary:   #C0392B;   /* Main accent — e.g. restaurant red */
+      --brand-secondary: #E8956D;   /* Warm highlight */
+      --brand-dark:      #1A0A00;   /* Dark background */
+      --brand-light:     #FDF6F0;   /* Light background */
+      --brand-text:      #2C1A0E;   /* Body text */
+      --brand-muted:     #8C6A55;   /* Muted text */
+
+      /* ============================================================
+        CUSTOMIZATION POINT 3: Typography
+        Swap font names to change the entire feel.
+      ============================================================ */
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+
+    /* Dark mode */
+    [data-theme="dark"] {
+      --brand-light: #1A0A00;
+      --brand-dark:  #FDF6F0;
+      --brand-text:  #F5EAE0;
+      --brand-muted: #B89080;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--brand-light);
+      color: var(--brand-text);
+      line-height: 1.7;
+      transition: background 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+
+    /* ── Skip link (accessibility) ── */
+    .skip-link {
+      position: absolute; top: -40px; left: 1rem;
+      background: var(--brand-primary); color: #fff;
+      padding: 8px 16px; border-radius: var(--radius-sm);
+      font-size: 14px; z-index: 9999; text-decoration: none;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* ── Header / Nav ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--brand-light);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      backdrop-filter: blur(10px);
+    }
+    nav {
+      max-width: 1100px; margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* ============================================================
+      CUSTOMIZATION POINT 4: Business name in nav
+    ============================================================ */
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--brand-primary);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px; font-weight: 500;
+      color: var(--brand-muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--brand-primary); }
+
+    /* Dark mode toggle */
+    .theme-toggle {
+      background: none; border: 1.5px solid var(--brand-muted);
+      border-radius: 999px; padding: 4px 12px;
+      font-size: 13px; cursor: pointer;
+      color: var(--brand-muted); font-family: var(--font-body);
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { border-color: var(--brand-primary); color: var(--brand-primary); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 1100px; margin: 0 auto;
+      padding: 5rem 1.5rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem 2rem; gap: 2.5rem; }
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brand-primary);
+      background: rgba(192,57,43,0.1);
+      padding: 4px 12px; border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ============================================================
+      CUSTOMIZATION POINT 5: Hero headline & subtext
+    ============================================================ */
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--brand-text);
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--brand-primary);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem; color: var(--brand-muted);
+      max-width: 420px; margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--brand-primary); color: #fff;
+      padding: 14px 28px; border-radius: var(--radius-md);
+      font-weight: 500; font-size: 15px;
+      text-decoration: none; border: none; cursor: pointer;
+      font-family: var(--font-body);
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(192,57,43,0.4); }
+    .hero-cta:active { transform: scale(0.98); }
+
+    /* Chat preview card */
+    .chat-preview {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.06);
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .chat-header {
+      /* ============================================================
+        CUSTOMIZATION POINT 6: Chat widget header color
+      ============================================================ */
+      background: var(--brand-primary);
+      padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .chat-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .chat-header-info { color: #fff; }
+    .chat-header-info strong { font-size: 14px; font-weight: 500; display: block; }
+    .chat-header-info span { font-size: 11px; opacity: 0.8; }
+
+    .chat-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 12px; }
+
+    .chat-msg {
+      max-width: 80%; padding: 10px 14px;
+      border-radius: 16px; font-size: 13.5px; line-height: 1.5;
+    }
+    .chat-msg.bot {
+      background: #F5EAE0; color: var(--brand-text);
+      border-bottom-left-radius: 4px; align-self: flex-start;
+    }
+    .chat-msg.user {
+      background: var(--brand-primary); color: #fff;
+      border-bottom-right-radius: 4px; align-self: flex-end;
+    }
+
+    .chat-input-bar {
+      border-top: 1px solid rgba(0,0,0,0.07);
+      padding: 12px; display: flex; gap: 8px; align-items: center;
+    }
+    .chat-input-bar input {
+      flex: 1; border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 999px; padding: 8px 14px; font-size: 13px;
+      font-family: var(--font-body); outline: none;
+      color: var(--brand-text); background: var(--brand-light);
+    }
+    .chat-send {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--brand-primary); border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .chat-send svg { width: 14px; height: 14px; fill: #fff; }
+
+    /* ── Features ── */
+    .features {
+      background: var(--brand-dark);
+      padding: 5rem 1.5rem;
+      margin: 3rem 0;
+    }
+    .features-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .section-label {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--brand-secondary);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: #fff; margin-bottom: 3rem;
+      max-width: 480px; line-height: 1.2;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* ============================================================
+      CUSTOMIZATION POINT 7: Feature cards — swap icon + text
+    ============================================================ */
+    .feature-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      transition: background 0.2s;
+    }
+    .feature-card:hover { background: rgba(255,255,255,0.09); }
+    .feature-icon {
+      font-size: 1.8rem; margin-bottom: 1rem;
+      display: block;
+    }
+    .feature-card h3 {
+      font-size: 15px; font-weight: 500;
+      color: #fff; margin-bottom: 6px;
+    }
+    .feature-card p {
+      font-size: 13.5px; color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+    }
+
+    /* ── Live chatbot section ── */
+    .chatbot-section {
+      max-width: 1100px; margin: 0 auto;
+      padding: 5rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem; align-items: start;
+    }
+    @media (max-width: 800px) {
+      .chatbot-section { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+
+    .chatbot-info .section-label { color: var(--brand-primary); }
+    .chatbot-info .section-title { color: var(--brand-text); margin-bottom: 1rem; }
+
+    .chatbot-info p {
+      font-size: 15px; color: var(--brand-muted);
+      margin-bottom: 1.5rem; line-height: 1.8;
+    }
+
+    /* ============================================================
+      CUSTOMIZATION POINT 8: Chatbase embed URL
+      Replace the src with your client's Chatbase link.
+    ============================================================ */
+    .chatbot-frame {
+      width: 100%; height: 560px;
+      border: none; border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      display: block;
+    }
+
+    /* ── Testimonials ── */
+    .testimonials {
+      background: rgba(192,57,43,0.05);
+      padding: 5rem 1.5rem;
+    }
+    .testimonials-inner {
+      max-width: 1100px; margin: 0 auto;
+      text-align: center;
+    }
+    .testimonials-inner .section-label { color: var(--brand-primary); }
+    .testimonials-inner .section-title { color: var(--brand-text); margin: 0 auto 3rem; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem; text-align: left;
+    }
+
+    /* ============================================================
+      CUSTOMIZATION POINT 9: Testimonial cards — swap quotes & names
+    ============================================================ */
+    .testimonial-card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    [data-theme="dark"] .testimonial-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+    .testimonial-stars { color: #F4A200; font-size: 13px; margin-bottom: 10px; }
+    .testimonial-text {
+      font-size: 14px; color: var(--brand-text);
+      line-height: 1.7; margin-bottom: 1rem;
+      font-style: italic;
+    }
+    .testimonial-author { font-size: 13px; font-weight: 500; color: var(--brand-primary); }
+    .testimonial-role { font-size: 12px; color: var(--brand-muted); }
+
+    /* ── CTA Banner ── */
+    .cta-banner {
+      background: var(--brand-primary);
+      padding: 5rem 1.5rem; text-align: center;
+    }
+    /* ============================================================
+      CUSTOMIZATION POINT 10: CTA headline & button
+    ============================================================ */
+    .cta-banner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      color: #fff; margin-bottom: 1rem;
+    }
+    .cta-banner p {
+      color: rgba(255,255,255,0.75);
+      font-size: 16px; margin-bottom: 2rem;
+    }
+    .cta-btn-light {
+      display: inline-block;
+      background: #fff; color: var(--brand-primary);
+      padding: 14px 32px; border-radius: var(--radius-md);
+      font-weight: 500; font-size: 15px;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .cta-btn-light:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--brand-dark);
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    /* ============================================================
+      CUSTOMIZATION POINT 11: Footer text
+    ============================================================ */
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 1.4rem; color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .footer-sub {
+      font-size: 13px; color: rgba(255,255,255,0.4);
+      margin-bottom: 1.5rem;
+    }
+    .footer-links {
+      display: flex; justify-content: center;
+      gap: 1.5rem; list-style: none; flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-size: 13px; color: rgba(255,255,255,0.4);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--brand-secondary); }
+    .footer-copy {
+      margin-top: 1.5rem;
+      font-size: 12px; color: rgba(255,255,255,0.25);
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+
+<body>
+  <!-- Accessibility skip link -->
+  <a class="skip-link" href="#chatbot">Skip to chatbot</a>
+
+  <!-- ═══════════════════════════════════════════
+    HEADER
+    Customization: nav-brand text, nav links
+  ═══════════════════════════════════════════ -->
+  <header role="banner">
+    <nav role="navigation" aria-label="Main navigation">
+      <a class="nav-brand" href="#" aria-label="Dhaka Spice House home">Dhaka Spice House</a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#chatbot">Chat Now</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">☽ Dark</button>
+      </ul>
+    </nav>
+  </header>
+
+  <main role="main">
+
+    <!-- ═══════════════════════════════════════════
+      HERO SECTION
+      Customization: eyebrow, h1, sub, CTA text
+    ═══════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-content reveal">
+        <span class="hero-eyebrow">AI-powered assistant</span>
+        <h1 id="hero-heading">
+          Get answers <em>instantly,</em><br/>any time of day
+        </h1>
+        <p class="hero-sub">
+          Our smart assistant knows our full menu, delivery zones, hours,
+          and more — available 24/7 so you never have to wait.
+        </p>
+        <a class="hero-cta" href="#chatbot" aria-label="Start chatting with our AI assistant">
+          Chat with us now →
+        </a>
+      </div>
+
+      <!-- Animated chat preview card -->
+      <div class="chat-preview reveal" aria-hidden="true">
+        <div class="chat-header">
+          <div class="chat-avatar">🍛</div>
+          <div class="chat-header-info">
+            <strong>Dhaka Spice House</strong>
+            <span>● Online now</span>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="chat-msg bot">Hi! Welcome to Dhaka Spice House 👋 How can I help you today?</div>
+          <div class="chat-msg user">Do you have home delivery?</div>
+          <div class="chat-msg bot">Yes! We deliver within a 5km radius. Minimum order is 500 BDT. We accept Cash and bKash 🛵</div>
+          <div class="chat-msg user">What's your best dish?</div>
+          <div class="chat-msg bot">Our Beef Kacchi Biryani (350 BDT) is a customer favourite! 😍</div>
+        </div>
+        <div class="chat-input-bar">
+          <input type="text" placeholder="Ask anything..." aria-label="Type your message" readonly />
+          <button class="chat-send" aria-label="Send">
+            <svg viewBox="0 0 24 24"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+      FEATURES
+      Customization: icon, h3, p for each card
+    ═══════════════════════════════════════════ -->
+    <section class="features" id="features" aria-labelledby="features-heading">
+      <div class="features-inner">
+        <p class="section-label">What it can do</p>
+        <h2 class="section-title reveal" id="features-heading">Your business, always available</h2>
+        <div class="features-grid">
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">🕐</span>
+            <h3>24/7 Availability</h3>
+            <p>Customers get instant answers at midnight, weekends, or public holidays — no staff needed.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">📋</span>
+            <h3>Menu & Pricing</h3>
+            <p>Knows every item, price, and special offer. Always up to date with your latest menu.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">🛵</span>
+            <h3>Delivery Info</h3>
+            <p>Answers delivery zone, minimum order, and payment method questions automatically.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">📞</span>
+            <h3>Reservations</h3>
+            <p>Guides customers on how to book a table or place a phone order in seconds.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+      LIVE CHATBOT EMBED
+      Customization: iframe src URL only!
+    ═══════════════════════════════════════════ -->
+    <section class="chatbot-section" id="chatbot" aria-labelledby="chatbot-heading">
+      <div class="chatbot-info reveal">
+        <p class="section-label">Try it live</p>
+        <h2 class="section-title" id="chatbot-heading">Ask our AI anything</h2>
+        <p>
+          Our AI assistant is trained on everything about Dhaka Spice House —
+          menu, prices, delivery, hours, and more. Just type your question below.
+        </p>
+        <p>
+          Available 24 hours a day, 7 days a week. No waiting, no hold music,
+          no missed calls.
+        </p>
+        <a class="hero-cta" href="tel:01700000000" style="display:inline-flex; margin-top:0.5rem;">
+          📞 Call us instead
+        </a>
+      </div>
+
+      <!-- ============================================================
+        CUSTOMIZATION POINT 8: Replace src with client's Chatbase link
+      ============================================================ -->
+      <iframe
+        class="chatbot-frame"
+        src="https://www.chatbase.co/IopvhX7n54aI8Y4Hs9YzK/help"
+        title="Dhaka Spice House AI Assistant"
+        aria-label="Live AI chatbot — ask us anything"
+        allow="clipboard-write"
+        loading="lazy"
+      ></iframe>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+      TESTIMONIALS
+      Customization: quote, name, role in each card
+    ═══════════════════════════════════════════ -->
+    <section class="testimonials" id="testimonials" aria-labelledby="testimonials-heading">
+      <div class="testimonials-inner">
+        <p class="section-label">Customer love</p>
+        <h2 class="section-title reveal" id="testimonials-heading">What our guests say</h2>
+        <div class="testimonials-grid">
+          <article class="testimonial-card reveal">
+            <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+            <p class="testimonial-text">"I asked about delivery at 11pm and got an instant answer. Ordered the biryani and it was amazing!"</p>
+            <p class="testimonial-author">Rahim S.</p>
+            <p class="testimonial-role">Regular customer, Dhanmondi</p>
+          </article>
+          <article class="testimonial-card reveal">
+            <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+            <p class="testimonial-text">"The chatbot knew the full menu with prices. So much easier than calling. Love this feature!"</p>
+            <p class="testimonial-author">Nusrat K.</p>
+            <p class="testimonial-role">First time visitor</p>
+          </article>
+          <article class="testimonial-card reveal">
+            <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+            <p class="testimonial-text">"Got my reservation confirmed through the chat in under 2 minutes. Very impressed."</p>
+            <p class="testimonial-author">Tanvir H.</p>
+            <p class="testimonial-role">Family dining, Mirpur</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+      CTA BANNER
+      Customization: headline, sub text, button link
+    ═══════════════════════════════════════════ -->
+    <section class="cta-banner" aria-labelledby="cta-heading">
+      <h2 id="cta-heading" class="reveal">Ready to order? We're ready for you.</h2>
+      <p class="reveal">Chat with our assistant or call us directly — we're always here.</p>
+      <a class="cta-btn-light reveal" href="#chatbot">Start chatting now</a>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+    FOOTER
+    Customization: brand name, links, address
+  ═══════════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <p class="footer-brand">Dhaka Spice House</p>
+    <p class="footer-sub">Dhanmondi, Dhaka · Open 11AM–11PM daily · 01700-000000</p>
+    <ul class="footer-links">
+      <li><a href="#chatbot">AI Assistant</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 Dhaka Spice House. AI chatbot powered by Chatbase.</p>
+  </footer>
+
+  <script>
+    /* Dark mode toggle */
+    const toggle = document.getElementById('themeToggle');
+    const saved  = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    toggle.textContent = saved === 'dark' ? '☀ Light' : '☽ Dark';
+
+    toggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next    = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      toggle.textContent = next === 'dark' ? '☀ Light' : '☽ Dark';
+    });
+
+    /* Scroll reveal */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
